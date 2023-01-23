@@ -1,0 +1,115 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://world.gd" type="Script" id=1]
+[ext_resource path="res://ball.png" type="Texture" id=2]
+[ext_resource path="res://paddle.png" type="Texture" id=3]
+[ext_resource path="res://ball.gd" type="Script" id=4]
+[ext_resource path="res://paddle.gd" type="Script" id=5]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 210, 5 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 5, 190 )
+
+[sub_resource type="CircleShape2D" id=3]
+radius = 4.0
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 4, 14 )
+
+[node name="world" type="Node"]
+script = ExtResource( 1 )
+
+[node name="bg-color" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -1.0
+margin_right = 1.0
+color = Color( 0.490196, 0.490196, 0.490196, 1 )
+
+[node name="topWall" type="Area2D" parent="."]
+position = Vector2( 200, 3 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="topWall"]
+shape = SubResource( 1 )
+
+[node name="btmWall" type="Area2D" parent="."]
+position = Vector2( 200, 397 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="btmWall"]
+shape = SubResource( 1 )
+
+[node name="leftWall" type="Area2D" parent="."]
+position = Vector2( -5, 200 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="leftWall"]
+shape = SubResource( 2 )
+
+[node name="rightWall" type="Area2D" parent="."]
+position = Vector2( 400, 0 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="rightWall"]
+position = Vector2( 5, 200 )
+shape = SubResource( 2 )
+
+[node name="ball" type="Area2D" parent="."]
+position = Vector2( 200, 200 )
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Sprite" type="Sprite" parent="ball"]
+texture = ExtResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ball"]
+shape = SubResource( 3 )
+
+[node name="rightpad" type="Area2D" parent="."]
+modulate = Color( 0.909804, 0.596078, 0.054902, 1 )
+position = Vector2( 380, 200 )
+script = ExtResource( 5 )
+__meta__ = {
+"_edit_group_": true
+}
+left = false
+
+[node name="Sprite" type="Sprite" parent="rightpad"]
+texture = ExtResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="rightpad"]
+shape = SubResource( 4 )
+
+[node name="leftpad" type="Area2D" parent="."]
+position = Vector2( 20, 200 )
+script = ExtResource( 5 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Sprite" type="Sprite" parent="leftpad"]
+texture = ExtResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="leftpad"]
+shape = SubResource( 4 )
+
+[connection signal="area_entered" from="leftWall" to="ball" method="_on_leftWall_area_entered"]
+[connection signal="area_entered" from="rightWall" to="ball" method="_on_rightWall_area_entered"]
+[connection signal="area_entered" from="rightpad" to="rightpad" method="_on_leftpad_area_entered"]
+[connection signal="area_entered" from="leftpad" to="leftpad" method="_on_leftpad_area_entered"]
